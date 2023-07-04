@@ -30,14 +30,11 @@ public class UserService {
         return newUser.getId();
     }
 
-    public Integer getAvailableCountOfWebSeriesViewable(Integer userId) throws Exception {
+    public Integer getAvailableCountOfWebSeriesViewable(Integer userId) {
 
         //Return the count of all webSeries that a user can watch based on his ageLimit and subscriptionType
         //Hint: Take out all the Webseries from the WebRepository
-        Optional<User> userOptional = userRepository.findById(userId);
-        if(!userOptional.isPresent()) throw new Exception("User not found");
-        User user = userOptional.get();
-        if(user.getSubscription() == null) throw new Exception("User doesn't have any subscription");
+        User user = userRepository.findById(userId).get();
 
         Integer count = 0;
         List<WebSeries> webSeriesList = webSeriesRepository.findAll();

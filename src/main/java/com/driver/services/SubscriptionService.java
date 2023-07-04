@@ -23,13 +23,11 @@ public class SubscriptionService {
     @Autowired
     UserRepository userRepository;
 
-    public Integer buySubscription(SubscriptionEntryDto subscriptionEntryDto) throws Exception {
+    public Integer buySubscription(SubscriptionEntryDto subscriptionEntryDto)  {
 
         //Save The subscription Object into the Db and return the total Amount that user has to pay
 
-        Optional<User> userOptional = userRepository.findById(subscriptionEntryDto.getUserId());
-        if(!userOptional.isPresent()) throw new Exception("User not found");
-        User user = userOptional.get();
+        User user = userRepository.findById(subscriptionEntryDto.getUserId()).get();
 
         Subscription subscription = new Subscription();
         subscription.setSubscriptionType(subscriptionEntryDto.getSubscriptionType());
@@ -57,9 +55,7 @@ public class SubscriptionService {
         //In all other cases just try to upgrade the subscription and tell the difference of price that user has to pay
         //update the subscription in the repository
 
-        Optional<User> userOptional = userRepository.findById(userId);
-        if(!userOptional.isPresent()) throw new Exception("User not found");
-        User user = userOptional.get();
+        User user = userRepository.findById(userId).get();
         Subscription subscription = user.getSubscription();
 
         SubscriptionType subscriptionType = subscription.getSubscriptionType();
