@@ -16,12 +16,13 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
     UserRepository userRepository;
-
-    @Autowired
     WebSeriesRepository webSeriesRepository;
 
+    public UserService(UserRepository userRepository, WebSeriesRepository webSeriesRepository) {
+        this.userRepository = userRepository;
+        this.webSeriesRepository = webSeriesRepository;
+    }
 
     public Integer addUser(User user){
 

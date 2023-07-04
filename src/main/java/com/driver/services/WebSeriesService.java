@@ -13,11 +13,13 @@ import java.util.Optional;
 @Service
 public class WebSeriesService {
 
-    @Autowired
     WebSeriesRepository webSeriesRepository;
-
-    @Autowired
     ProductionHouseRepository productionHouseRepository;
+
+    public WebSeriesService(WebSeriesRepository webSeriesRepository, ProductionHouseRepository productionHouseRepository) {
+        this.webSeriesRepository = webSeriesRepository;
+        this.productionHouseRepository = productionHouseRepository;
+    }
 
     public Integer addWebSeries(WebSeriesEntryDto webSeriesEntryDto)throws  Exception{
 

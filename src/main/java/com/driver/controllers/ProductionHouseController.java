@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/production")
 public class ProductionHouseController {
-    @Autowired
+
     ProductionHouseService productionHouseService;
 
+    public ProductionHouseController(ProductionHouseService productionHouseService) {
+        this.productionHouseService = productionHouseService;
+    }
 
     @PostMapping("/add")
     public Integer addProductionHouseInfoIntoDb(@RequestBody ProductionHouseEntryDto productionHouseEntryDto){
