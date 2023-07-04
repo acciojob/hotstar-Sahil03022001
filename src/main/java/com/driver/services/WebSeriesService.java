@@ -35,11 +35,7 @@ public class WebSeriesService {
         webSeries.setProductionHouse(productionHouse);
 
         productionHouse.getWebSeriesList().add(webSeries);
-        double prevRating = productionHouse.getRatings();
-        int size = productionHouse.getWebSeriesList().size();
-        double newRating = (prevRating * (size - 1) + webSeriesEntryDto.getRating()) / size;
-
-        productionHouse.setRatings(newRating);
+        productionHouse.setRatings(webSeriesEntryDto.getRating());
 
         productionHouseRepository.save(productionHouse);
         return webSeries.getId();
