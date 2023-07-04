@@ -10,20 +10,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductionHouseService {
 
+    @Autowired
     ProductionHouseRepository productionHouseRepository;
 
-    public ProductionHouseService(ProductionHouseRepository productionHouseRepository) {
-        this.productionHouseRepository = productionHouseRepository;
-    }
+    public Integer addProductionHouseToDb(ProductionHouseEntryDto productionHouseEntryDto) {
 
-    public Integer addProductionHouseToDb(ProductionHouseEntryDto productionHouseEntryDto){
-
-        ProductionHouse productionHouse = new ProductionHouse();
-        productionHouse.setName(productionHouse.getName());
+        ProductionHouse productionHouse = new ProductionHouse(productionHouseEntryDto.getName());
         productionHouse.setRatings(0);
-        return productionHouseRepository.save(productionHouse).getId();
+        productionHouse = productionHouseRepository.save(productionHouse);
+        return productionHouse.getId();
     }
-
-
-
 }

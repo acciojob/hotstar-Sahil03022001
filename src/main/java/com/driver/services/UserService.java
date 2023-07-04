@@ -16,13 +16,11 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    @Autowired
     UserRepository userRepository;
+    @Autowired
     WebSeriesRepository webSeriesRepository;
 
-    public UserService(UserRepository userRepository, WebSeriesRepository webSeriesRepository) {
-        this.userRepository = userRepository;
-        this.webSeriesRepository = webSeriesRepository;
-    }
 
     public Integer addUser(User user){
 
@@ -40,8 +38,7 @@ public class UserService {
         Integer count = 0;
         List<WebSeries> webSeriesList = webSeriesRepository.findAll();
         for(WebSeries webSeries : webSeriesList) {
-            if(user.getAge() >= webSeries.getAgeLimit() &&
-                    user.getSubscription().getSubscriptionType().equals(webSeries.getSubscriptionType())) {
+            if(user.getAge() >= webSeries.getAgeLimit()) {
                 count++;
             }
         }

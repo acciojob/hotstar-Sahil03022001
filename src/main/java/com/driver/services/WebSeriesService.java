@@ -13,13 +13,10 @@ import java.util.Optional;
 @Service
 public class WebSeriesService {
 
+    @Autowired
     WebSeriesRepository webSeriesRepository;
+    @Autowired
     ProductionHouseRepository productionHouseRepository;
-
-    public WebSeriesService(WebSeriesRepository webSeriesRepository, ProductionHouseRepository productionHouseRepository) {
-        this.webSeriesRepository = webSeriesRepository;
-        this.productionHouseRepository = productionHouseRepository;
-    }
 
     public Integer addWebSeries(WebSeriesEntryDto webSeriesEntryDto)throws  Exception{
 
@@ -28,19 +25,13 @@ public class WebSeriesService {
         //use function written in Repository Layer for the same
         //Dont forget to save the production and webseries Repo
 
-        WebSeries webSeries = webSeriesRepository.findBySeriesName(webSeriesEntryDto.getSeriesName());
-        if(webSeries != null) throw new Exception("Series is already present");
+        WebSeries webSeries1 = webSeriesRepository.findBySeriesName(webSeriesEntryDto.getSeriesName());
+        if(webSeries1 != null) throw new Exception("Series is already present");
 
-        Optional<ProductionHouse> productionHouseOptional = productionHouseRepository.findById(webSeriesEntryDto.getProductionHouseId());
-        if(!productionHouseOptional.isPresent()) throw new Exception("Production house not available");
+        ProductionHouse productionHouse = productionHouseRepository.findById(webSeriesEntryDto.getProductionHouseId()).get();
 
-        ProductionHouse productionHouse = productionHouseOptional.get();
-
-        webSeries = new WebSeries();
-        webSeries.setSeriesName(webSeriesEntryDto.getSeriesName());
-        webSeries.setAgeLimit(webSeriesEntryDto.getAgeLimit());
-        webSeries.setRating(webSeriesEntryDto.getRating());
-        webSeries.setSubscriptionType(webSeriesEntryDto.getSubscriptionType());
+        WebSeries webSeries = new WebSeries(webSeriesEntryDto.getSeriesName(),
+                webSeriesEntryDto.getAgeLimit(), webSeriesEntryDto.getRating(), webSeriesEntryDto.getSubscriptionType());
         webSeries.setProductionHouse(productionHouse);
 
         productionHouse.getWebSeriesList().add(webSeries);
@@ -51,6 +42,6 @@ public class WebSeriesService {
         productionHouse.setRatings(newRating);
 
         productionHouseRepository.save(productionHouse);
-        return webSeriesRepository.findBySeriesName(webSeries.getSeriesName()).getId();
+        return webSeries.getId();
     }
 }

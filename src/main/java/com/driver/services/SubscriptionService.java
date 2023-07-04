@@ -17,14 +17,12 @@ import java.util.Optional;
 @Service
 public class SubscriptionService {
 
+    @Autowired
     SubscriptionRepository subscriptionRepository;
 
+    @Autowired
     UserRepository userRepository;
 
-    public SubscriptionService(SubscriptionRepository subscriptionRepository, UserRepository userRepository) {
-        this.subscriptionRepository = subscriptionRepository;
-        this.userRepository = userRepository;
-    }
 
     public Integer buySubscription(SubscriptionEntryDto subscriptionEntryDto)  {
 
@@ -49,7 +47,7 @@ public class SubscriptionService {
         subscription.setUser(user);
         user.setSubscription(subscription);
 
-        return userRepository.save(user).getSubscription().getId();
+        return totalAmount;
     }
 
     public Integer upgradeSubscription(Integer userId)throws Exception{
@@ -90,8 +88,10 @@ public class SubscriptionService {
         //Hint is to use findAll function from the SubscriptionDb
 
         List<Subscription> subscriptionList = subscriptionRepository.findAll();
-        return subscriptionList.stream()
-                .mapToInt(Subscription::getTotalAmountPaid)
-                .sum();
+        int total = 0;
+        for(Subscription subscription : subscriptionList) {
+            total += subscription.getTotalAmountPaid();
+        }
+        return total;
     }
 }
